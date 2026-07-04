@@ -1,0 +1,24 @@
+.recent-page {
+  padding: 30px;
+  color: white;
+}
+
+.recent-page h1 {
+  font-size: 34px;
+  margin-bottom: 25px;
+}
+
+.empty-recent {
+  text-align: center;
+  margin-top: 100px;
+}
+
+.empty-recent h2 {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.empty-recent p {
+  color: #b3b3b3;
+  font-size: 18px;
+}

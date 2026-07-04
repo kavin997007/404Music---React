@@ -1,0 +1,18 @@
+:root{
+    --bg:#070B16;
+    --bg-light:#0F172A;
+
+    --glass:rgba(255,255,255,.08);
+    --glass-light:rgba(255,255,255,.12);
+
+    --border:rgba(255,255,255,.12);
+
+    --white:#ffffff;
+    --gray:#B3B3B3;
+
+    --green:#1ED760;
+    --blue:#4F9DFF;
+    --purple:#7C5CFF;
+
+    --radius:20px;
+}

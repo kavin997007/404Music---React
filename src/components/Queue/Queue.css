@@ -1,0 +1,522 @@
+/* ==========================================
+   QUEUE PANEL
+========================================== */
+
+.queue{
+
+    width:360px;
+
+    height:100vh;
+
+    position:sticky;
+
+    top:0;
+
+    overflow:hidden;
+
+    display:flex;
+
+    flex-direction:column;
+
+    padding:24px;
+
+    background:var(--glass);
+
+    backdrop-filter:blur(30px);
+
+    border-left:1px solid var(--glass-border);
+
+    box-shadow:
+    -12px 0 40px rgba(0,0,0,.25);
+
+    z-index:50;
+}
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.queue-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+    
+    margin-bottom:22px;
+}
+
+.queue-header h2{
+
+    color:var(--text);
+
+    font-size:26px;
+
+    font-weight:700;
+}
+
+.queue-header span{
+
+    color:var(--muted);
+
+    font-size:13px;
+
+    padding:8px 14px;
+
+    border-radius:20px;
+
+    background:
+    rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+}
+
+/* ==========================================
+   LIST
+========================================== */
+
+.queue-list{
+
+    flex:1;
+
+    overflow-y:auto;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+
+    padding-top: 8px;
+
+    padding-right:6px;
+}
+
+/* Scrollbar */
+
+.queue-list::-webkit-scrollbar{
+
+    width:6px;
+}
+
+.queue-list::-webkit-scrollbar-thumb{
+
+    background:
+    rgba(255,255,255,.12);
+
+    border-radius:20px;
+}
+
+/* ==========================================
+   ITEM
+========================================== */
+
+.queue-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:25px;
+
+    border-radius:22px;
+
+    background:
+    rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,255,255,.06);
+
+    cursor:pointer;
+
+    transition:
+    all .45s cubic-bezier(.22,1,.36,1);
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+/* Glass shine */
+
+.queue-item::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:50%;
+
+    height:100%;
+
+    background:
+
+    linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.08),
+    transparent);
+
+    transform:skewX(-25deg);
+
+    transition:1.2s;
+}
+
+.queue-item:hover::before{
+
+    left:180%;
+}
+
+.queue-item:hover{
+
+    transform:translateY(-3px);
+
+    background:
+    rgba(139,92,246,.10);
+
+    border-color:
+    rgba(139,92,246,.18);
+
+    box-shadow:
+
+    0 20px 40px rgba(0,0,0,.30),
+
+    0 0 20px rgba(139,92,246,.15);
+}
+
+/* ==========================================
+   ACTIVE SONG
+========================================== */
+
+.queue-item.active{
+
+    background:
+
+    linear-gradient(
+    135deg,
+
+    rgba(139,92,246,.22),
+
+    rgba(6,182,212,.15));
+
+    border-color:
+    rgba(139,92,246,.25);
+}
+
+.queue-item.active::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    bottom:0;
+
+    width:4px;
+
+    border-radius:20px;
+
+    background:
+
+    linear-gradient(
+
+    var(--primary),
+
+    var(--secondary));
+}
+
+/* ==========================================
+   THUMBNAIL
+========================================== */
+
+.queue-item img{
+
+    width:64px;
+
+    height:64px;
+
+    border-radius:18px;
+
+    object-fit:cover;
+
+    transition:.6s;
+}
+
+.queue-item:hover img{
+
+    transform:scale(1.08);
+}
+
+.queue-item.active img{
+
+    animation:queueSpin 18s linear infinite;
+}
+
+@keyframes queueSpin{
+
+    from{
+
+        transform:rotate(0deg);
+    }
+
+    to{
+
+        transform:rotate(360deg);
+    }
+
+}
+
+/* ==========================================
+   SONG INFO
+========================================== */
+
+.queue-info{
+
+    flex:1;
+
+    min-width:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    gap:5px;
+
+    cursor:pointer;
+}
+
+.queue-info h4{
+
+    color:var(--text);
+
+    font-size:15px;
+
+    font-weight:600;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    transition:.45s;
+}
+
+.queue-info p{
+
+    color:var(--muted);
+
+    font-size:13px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    transition:.45s;
+}
+
+.queue-item:hover .queue-info h4{
+
+    color:var(--secondary);
+}
+
+.queue-item:hover .queue-info p{
+
+    color:#d4d4d8;
+}
+
+/* ==========================================
+   REMOVE BUTTON
+========================================== */
+
+.queue-remove{
+
+    width:38px;
+
+    height:38px;
+
+    border:none;
+
+    border-radius:12px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    color:var(--muted);
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.06);
+
+    transition:all .4s cubic-bezier(.22,1,.36,1);
+
+    flex-shrink:0;
+}
+
+.queue-remove:hover{
+
+    color:white;
+
+    background:#ef4444;
+
+    border-color:#ef4444;
+
+    transform:rotate(90deg) scale(1.08);
+
+    box-shadow:
+    0 10px 25px rgba(239,68,68,.35);
+}
+
+/* ==========================================
+   ACTIVE ITEM EFFECT
+========================================== */
+
+.queue-item.active .queue-info h4{
+
+    color:white;
+}
+
+.queue-item.active .queue-info p{
+
+    color:#d4d4d8;
+}
+
+/* ==========================================
+   FLOAT ANIMATION
+========================================== */
+
+.queue-item{
+
+    animation:itemFade .45s ease;
+}
+
+@keyframes itemFade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+    }
+
+}
+
+/* ==========================================
+   MOBILE RESPONSIVE
+========================================== */
+
+@media(max-width:1200px){
+
+.queue{
+
+    width:300px;
+}
+
+}
+
+@media(max-width:992px){
+
+.queue{
+
+    display:none;
+}
+
+}
+
+/* ==========================================
+   LARGE DESKTOP
+========================================== */
+
+@media(min-width:1600px){
+
+.queue{
+
+    width:400px;
+
+    padding:28px;
+}
+
+.queue-item{
+
+    padding:15px;
+}
+
+.queue-item img{
+
+    width:72px;
+
+    height:72px;
+}
+
+.queue-info h4{
+
+    font-size:16px;
+}
+
+.queue-info p{
+
+    font-size:14px;
+}
+
+}
+
+/* ==========================================
+   ACCESSIBILITY
+========================================== */
+
+.queue-item:focus-within{
+
+    outline:2px solid rgba(139,92,246,.45);
+
+    outline-offset:4px;
+}
+
+.queue-remove:focus{
+
+    outline:none;
+
+    box-shadow:
+    0 0 0 3px rgba(139,92,246,.35);
+}
+
+/* ==========================================
+   REDUCE MOTION
+========================================== */
+
+@media(prefers-reduced-motion:reduce){
+
+.queue-item,
+.queue-item img,
+.queue-remove{
+
+    animation:none !important;
+
+    transition:none !important;
+}
+
+}

@@ -1,0 +1,217 @@
+/* ==========================================
+   APP LAYOUT
+========================================== */
+
+.layout{
+
+    display:grid;
+
+    grid-template-columns:
+
+        300px
+
+        minmax(0,1fr)
+
+        330px;
+
+    gap:22px;
+
+    padding:20px;
+
+    min-height:100vh;
+
+    background:transparent;
+}
+
+/* ==========================================
+   MAIN
+========================================== */
+
+.main{
+    display:flex;
+    flex-direction:column;
+
+    min-width:0;
+
+    min-height:0;      /* <-- important */
+    height:100vh;      /* <-- important */
+}
+
+/* ==========================================
+   CONTENT
+========================================== */
+
+.content{
+    flex:1;
+
+    min-height:0;      /* <-- important */
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    margin-top:20px;
+
+    padding-bottom:140px;
+
+    animation:fadeIn .45s ease;
+}
+
+.content::-webkit-scrollbar{
+
+    width:6px;
+    
+}
+
+.content::-webkit-scrollbar-thumb{
+
+    background:
+    rgba(255,255,255,.12);
+    border-radius:20px;
+}
+
+/* ==========================================
+PLAYER
+========================================== */
+
+.player-wrapper{
+
+    position:fixed;
+
+    left:342px;
+
+    right:352px;
+
+    bottom:20px;
+
+    z-index:90;
+}
+
+/* ==========================================
+ANIMATION
+========================================== */
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(15px);
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+    }
+
+}
+
+/* ==========================================
+LAPTOP
+========================================== */
+
+@media(max-width:1400px){
+
+.layout{
+
+    grid-template-columns:
+
+    260px
+
+    minmax(0,1fr)
+
+    280px;
+}
+
+.player-wrapper{
+
+    left:300px;
+
+    right:300px;
+}
+
+}
+
+/* ==========================================
+TABLET
+========================================== */
+
+@media(max-width:1100px){
+
+.layout{
+
+    grid-template-columns:
+
+    240px
+
+    minmax(0,1fr);
+}
+
+.player-wrapper{
+
+    left:270px;
+
+    right:20px;
+}
+
+}
+
+/* ==========================================
+MOBILE
+========================================== */
+
+@media(max-width:768px){
+
+.layout{
+
+    display:block;
+
+    padding:12px;
+}
+
+.main{
+
+    width:100%;
+}
+
+.content{
+
+    margin-top:18px;
+
+    padding-bottom:180px;
+}
+
+.player-wrapper{
+
+    left:12px;
+
+    right:12px;
+
+    bottom:90px;
+}
+
+}
+
+/* ==========================================
+SMALL MOBILE
+========================================== */
+
+@media(max-width:480px){
+
+.layout{
+
+    padding:10px;
+}
+
+.player-wrapper{
+
+    left:10px;
+
+    right:10px;
+
+    bottom:82px;
+}
+
+}

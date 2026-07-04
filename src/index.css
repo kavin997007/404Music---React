@@ -1,0 +1,177 @@
+/* ==========================================
+   GOOGLE FONT
+========================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+/* ==========================================
+   ROOT VARIABLES
+========================================== */
+
+:root{
+
+  /* Colors */
+
+  --bg:#05070F;
+  --bg-light:#0B1020;
+
+  --glass:rgba(255,255,255,.05);
+  --glass-hover:rgba(255,255,255,.08);
+
+  --glass-border:rgba(255,255,255,.08);
+
+  --primary:#8B5CF6;
+  --secondary:#06B6D4;
+  --accent:#EC4899;
+
+  --text:#FFFFFF;
+  --muted:#A1A1AA;
+
+  /* Radius */
+
+  --radius:28px;
+  --radius-small:18px;
+
+  /* Shadow */
+
+  --shadow:
+      0 8px 32px rgba(0,0,0,.45);
+
+  --glow:
+      0 0 35px rgba(139,92,246,.18);
+
+  /* Transition */
+
+  --transition:.35s ease;
+
+}
+
+/* ==========================================
+   RESET
+========================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+
+    scroll-behavior:smooth;
+}
+
+body{
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    font-family:'Outfit',sans-serif;
+
+    overflow-x:hidden;
+
+    overflow:hidden;
+}
+
+a{
+
+    text-decoration:none;
+
+    color:inherit;
+}
+
+button{
+
+    font-family:inherit;
+}
+
+input{
+
+    font-family:inherit;
+}
+
+/* ==========================================
+   BODY BACKGROUND
+========================================== */
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    width:550px;
+    height:550px;
+
+    top:-180px;
+    left:-180px;
+
+    background:
+    radial-gradient(circle,
+    rgba(139,92,246,.20),
+    transparent 70%);
+
+    filter:blur(70px);
+
+    z-index:-2;
+}
+
+body::after{
+
+    content:"";
+
+    position:fixed;
+
+    width:500px;
+    height:500px;
+
+    right:-150px;
+    bottom:-150px;
+
+    background:
+    radial-gradient(circle,
+    rgba(6,182,212,.15),
+    transparent 70%);
+
+    filter:blur(80px);
+
+    z-index:-2;
+}
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+}
+
+::-webkit-scrollbar-track{
+
+    background:#080A14;
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:linear-gradient(
+    to bottom,
+    var(--primary),
+    var(--secondary));
+
+    border-radius:50px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:var(--accent);
+}
+
+::selection{
+
+    background:var(--primary);
+
+    color:white;
+}
+
