@@ -254,6 +254,14 @@
     font-size:14px;
 }
 
+.quick-card.active {
+    border: 2px solid #1db954;
+    background: linear-gradient(
+        135deg,
+        rgba(29,185,84,.2),
+        rgba(29,185,84,.05)
+    );
+}
 /* ==========================================
    MUSIC SECTION
 ========================================== */

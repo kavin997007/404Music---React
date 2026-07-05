@@ -51,7 +51,7 @@
 
     margin-top:20px;
 
-    padding-bottom:140px;
+    /* padding-bottom:140px; */
 
     animation:fadeIn .45s ease;
 }
@@ -75,13 +75,13 @@ PLAYER
 
 .player-wrapper{
 
-    position:fixed;
+    position:sticky;
 
     left:342px;
 
     right:352px;
 
-    bottom:20px;
+    bottom:0;
 
     z-index:90;
 }
@@ -212,6 +212,14 @@ SMALL MOBILE
     right:10px;
 
     bottom:82px;
+}
+
+}
+
+@media(max-width:768px){
+
+.main-content{
+    padding-bottom:90px;
 }
 
 }

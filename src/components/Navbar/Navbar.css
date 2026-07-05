@@ -85,6 +85,8 @@
   z-index: 2;
 }
 
+
+
 .logo-icon {
   width: 50px;
   height: 50px;
@@ -104,7 +106,21 @@
   font-size: 24px;
 
   box-shadow: 0 12px 30px rgba(139,92,246,.35);
+
+  transition: all .6s cubic-bezier(.22,1,.36,1);
 }
+.logo-icon img{
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  object-fit: cover;
+}
+
+.logo-icon:hover{
+
+    transform:rotate(-8deg) scale(1.05);
+}
+
 
 .logo h2 {
   color: var(--text);
@@ -163,6 +179,9 @@
   font-size: 18px;
 
   margin-right: 14px;
+
+  cursor: pointer;
+
 }
 
 .search-box input {
@@ -310,84 +329,116 @@
 
 }
 
-/* ==========================================
+/* ========================================
    MOBILE
-========================================== */
+======================================== */
 
 @media (max-width:768px){
 
-  .navbar{
+.navbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 
-    display:grid;
-
-    grid-template-columns:1fr auto;
-
-    grid-template-areas:
-    "logo actions"
-    "search search";
-
-    row-gap:16px;
-
-    width:calc(100% - 20px);
+    gap:12px;
 
     padding:16px;
-  }
 
-  .logo{
-
-    grid-area:logo;
-  }
-
-  .nav-actions{
-
-    grid-area:actions;
-
-    justify-self:end;
-  }
-
-  .search-box{
-
-    grid-area:search;
-
-    width:100%;
-    max-width:none;
-  }
-
+    border-radius:22px;
 }
 
-/* ==========================================
-   SMALL MOBILE
-========================================== */
+/* Logo */
 
-@media (max-width:500px){
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
 
-  .logo h2{
+    flex-shrink:0;
+}
 
-    display:none;
-  }
-
-  .logo-icon{
-
+.logo-icon{
     width:46px;
     height:46px;
 
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:14px;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    color:#fff;
     font-size:22px;
-  }
+}
 
-  .glass-btn{
+.logo h2{
+    display:block;
+    font-size:22px;
+    font-weight:700;
+    color:#fff;
+    white-space:nowrap;
+}
 
-    width:44px;
-    height:44px;
-  }
+/* Search */
 
-  .profile{
+.search-box{
+    width:100%;
+    margin-top:14px;
+    order:3;
+}
 
+.search-box input{
+    height:52px;
+    padding:0 52px 0 18px;
+    font-size:15px;
+}
+
+/* Right */
+
+.nav-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.glass-btn{
+    width:46px;
+    height:46px;
+}
+
+.profile{
     display:none;
-  }
+}
 
-  .search-box{
+/* Wrap to next line */
 
+.navbar{
+    flex-wrap:wrap;
+}
+
+}
+
+@media (max-width:480px){
+
+.logo h2{
+    font-size:20px;
+}
+
+.logo-icon{
+    width:42px;
+    height:42px;
+    font-size:20px;
+}
+
+.search-box input{
     height:48px;
-  }
+    font-size:14px;
+}
 
 }

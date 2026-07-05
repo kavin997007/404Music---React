@@ -53,6 +53,38 @@ const MusicProvider = ({ children }) => {
   // Queue songs
   const [queue, setQueue] = useState([]);
 
+  //  What type of music
+  const [currentSource, setCurrentSource] = useState({
+  type: "trending",
+  query: "",
+});
+
+// PreLoading
+const [isPreloading, setIsPreloading] =
+  useState(false);
+
+  // Submit
+  const [submittedSearch, setSubmittedSearch] = useState("");
+
+  // Theme
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("theme") !== "light";
+});
+
+useEffect(() => {
+
+    if (darkMode) {
+        document.body.classList.add("dark");
+        document.body.classList.remove("light");
+        localStorage.setItem("theme", "dark");
+    } else {
+        document.body.classList.add("light");
+        document.body.classList.remove("dark");
+        localStorage.setItem("theme", "light");
+    }
+
+}, [darkMode]);
+
   useEffect(() => {
   localStorage.setItem(
     "favorites",
@@ -217,6 +249,18 @@ const removeFromQueue = (songId) => {
 
         showFullPlayer,
         setShowFullPlayer,
+
+        currentSource,
+        setCurrentSource,
+
+        isPreloading,
+        setIsPreloading,
+
+        submittedSearch,
+        setSubmittedSearch,
+
+        darkMode,
+        setDarkMode,
       }}
     >
       {children}

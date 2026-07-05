@@ -49,13 +49,7 @@ const Player = () => {
     setShowFullPlayer,
   } = useContext(MusicContext);
 
-  if (!currentSong) {
-    return (
-      <div className="player empty-player">
-        <h3>Select a Song 🎵</h3>
-      </div>
-    );
-  }
+  if (!currentSong) return null;
 
   // Format Time
   const formatTime = (seconds) => {
@@ -163,7 +157,9 @@ const Player = () => {
   console.log("Current Index:", currentIndex);
 
   return (
-    <div className="player">
+  <>
+    {/* Desktop Player */}
+    <div className="player desktop-player">
 
       {/* LEFT */}
       <div
@@ -171,7 +167,6 @@ const Player = () => {
         onClick={() => setShowFullPlayer(true)}
       >
         <div className="album-wrapper">
-
           <img
             src={currentSong.thumbnail}
             alt={currentSong.title}
@@ -183,17 +178,12 @@ const Player = () => {
           />
 
           <div className="album-glow"></div>
-
         </div>
 
         <div className="player-song">
-
           <h4>{currentSong.title}</h4>
-
           <p>{currentSong.artist}</p>
-
         </div>
-
       </div>
 
       {/* CENTER */}
@@ -287,19 +277,49 @@ const Player = () => {
           max="100"
           value={volume}
           onChange={handleVolume}
-          style={{
-            background: `linear-gradient(
-              90deg,
-              var(--primary) ${volume}%,
-              rgba(255,255,255,.10) ${volume}%
-            )`,
-          }}
         />
 
       </div>
 
     </div>
-  );
+
+    {/* Mobile Mini Player */}
+
+    <div className="mini-player">
+
+      <div
+        className="mini-left"
+        onClick={() => setShowFullPlayer(true)}
+      >
+
+        <img
+          src={currentSong.thumbnail}
+          alt={currentSong.title}
+        />
+
+        <div>
+
+          <h4>{currentSong.title}</h4>
+
+          <p>{currentSong.artist}</p>
+
+        </div>
+
+      </div>
+
+      <button
+        className="mini-play"
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsPlaying(!isPlaying);
+        }}
+      >
+        {isPlaying ? <FaPause /> : <FaPlay />}
+      </button>
+
+    </div>
+  </>
+);
 };
 
 export default Player;

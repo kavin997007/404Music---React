@@ -45,3 +45,30 @@ export const searchMusic = async (query) => {
     return [];
   }
 };
+
+// More Songs
+
+export const fetchMoreSongs = async (source) => {
+  let query = "";
+
+  switch (source.type) {
+    case "search":
+      query = `${source.query} songs`;
+      break;
+
+    case "category":
+      query = `${source.query} playlist`;
+      break;
+
+    case "trending":
+      return await getTrendingMusic();
+
+    case "liked":
+      return await getTrendingMusic();
+
+    default:
+      query = source.query || "Top Music";
+  }
+
+  return await searchMusic(query);
+};

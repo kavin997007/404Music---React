@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { MusicContext } from "../../context/MusicContext";
+import logo from '../../assets/favicon.png'
 
 import {
   FaHome,
@@ -38,7 +39,8 @@ const Sidebar = () => {
 
         <div className="sidebar-logo">
           <div className="logo-circle">
-            <FaMusic />
+            {/* <FaMusic /> */}
+            <img src={logo} alt="logo" className="" />
           </div>
 
           <div className="logo-text">

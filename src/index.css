@@ -5,12 +5,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 /* ==========================================
-   ROOT VARIABLES
+   DARK THEME (DEFAULT)
 ========================================== */
 
-:root{
-
-  /* Colors */
+:root,
+[data-theme="dark"]{
 
   --bg:#05070F;
   --bg-light:#0B1020;
@@ -27,25 +26,140 @@
   --text:#FFFFFF;
   --muted:#A1A1AA;
 
-  /* Radius */
-
   --radius:28px;
   --radius-small:18px;
 
-  /* Shadow */
+  --shadow:0 8px 32px rgba(0,0,0,.45);
 
-  --shadow:
-      0 8px 32px rgba(0,0,0,.45);
-
-  --glow:
-      0 0 35px rgba(139,92,246,.18);
-
-  /* Transition */
+  --glow:0 0 35px rgba(139,92,246,.18);
 
   --transition:.35s ease;
 
 }
 
+[data-theme="light"]{
+
+  --bg:#F4F7FB;
+
+  --bg-light:#FFFFFF;
+
+  --glass:rgba(255,255,255,.85);
+
+  --glass-hover:#FFFFFF;
+
+  --glass-border:#D9D9D9;
+
+  --primary:#8B5CF6;
+
+  --secondary:#06B6D4;
+
+  --accent:#EC4899;
+
+  --text:#111827;
+
+  --muted:#6B7280;
+
+  --shadow:0 10px 25px rgba(0,0,0,.08);
+
+  --glow:none;
+
+}
+
+/* ==========================================
+   LIGHT THEME
+========================================== */
+
+body.light{
+
+  --bg:#F5F7FB;
+
+  --bg-light:#FFFFFF;
+
+  --glass:rgba(255,255,255,.85);
+
+  --glass-hover:#ffffff;
+
+  --glass-border:rgba(0,0,0,.08);
+
+  --primary:#7C3AED;
+
+  --secondary:#0EA5E9;
+
+  --accent:#DB2777;
+
+  --text:#111827;
+
+  --muted:#6B7280;
+
+  --shadow:
+      0 8px 28px rgba(0,0,0,.08);
+
+  --glow:
+      0 0 25px rgba(124,58,237,.15);
+
+  --transition:.35s ease;
+}
+
+
+/* DARK */
+
+:root,
+[data-theme="dark"]{
+
+  --bg:#05070F;
+  --bg-light:#0B1020;
+
+  --glass:rgba(255,255,255,.05);
+  --glass-hover:rgba(255,255,255,.08);
+
+  --glass-border:rgba(255,255,255,.08);
+
+  --primary:#8B5CF6;
+  --secondary:#06B6D4;
+  --accent:#EC4899;
+
+  --text:#FFFFFF;
+  --muted:#A1A1AA;
+
+  --radius:28px;
+  --radius-small:18px;
+
+  --shadow:0 8px 32px rgba(0,0,0,.45);
+
+  --glow:0 0 35px rgba(139,92,246,.18);
+
+  --transition:.35s ease;
+}
+
+
+/* LIGHT */
+
+[data-theme="light"]{
+
+  --bg:#F4F7FB;
+
+  --bg-light:#FFFFFF;
+
+  --glass:rgba(255,255,255,.85);
+
+  --glass-hover:#FFFFFF;
+
+  --glass-border:#D7DEE8;
+
+  --primary:#7C3AED;
+
+  --secondary:#2563EB;
+
+  --accent:#EC4899;
+
+  --text:#1F2937;
+
+  --muted:#6B7280;
+
+  --shadow:0 10px 25px rgba(0,0,0,.08);
+
+  --glow:none;
+}
 /* ==========================================
    RESET
 ========================================== */
@@ -72,6 +186,10 @@ body{
     overflow-x:hidden;
 
     overflow:hidden;
+
+    transition:
+        background .36s,
+        color .35s;
 }
 
 a{
@@ -92,7 +210,7 @@ input{
 }
 
 /* ==========================================
-   BODY BACKGROUND
+   BODY GLOW
 ========================================== */
 
 body::before{
@@ -117,6 +235,14 @@ body::before{
     z-index:-2;
 }
 
+body.light::before{
+
+    background:
+    radial-gradient(circle,
+    rgba(124,58,237,.10),
+    transparent 70%);
+}
+
 body::after{
 
     content:"";
@@ -139,6 +265,14 @@ body::after{
     z-index:-2;
 }
 
+body.light::after{
+
+    background:
+    radial-gradient(circle,
+    rgba(14,165,233,.08),
+    transparent 70%);
+}
+
 /* ==========================================
    SCROLLBAR
 ========================================== */
@@ -150,15 +284,17 @@ body::after{
 
 ::-webkit-scrollbar-track{
 
-    background:#080A14;
+    background:var(--bg-light);
 }
 
 ::-webkit-scrollbar-thumb{
 
-    background:linear-gradient(
-    to bottom,
-    var(--primary),
-    var(--secondary));
+    background:
+    linear-gradient(
+        to bottom,
+        var(--primary),
+        var(--secondary)
+    );
 
     border-radius:50px;
 }
@@ -174,4 +310,3 @@ body::after{
 
     color:white;
 }
-

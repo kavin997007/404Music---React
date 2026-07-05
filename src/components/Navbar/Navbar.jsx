@@ -1,18 +1,36 @@
 import { useContext } from "react";
 import { MusicContext } from "../../context/MusicContext";
 import { IoMusicalNotes } from "react-icons/io5";
-
+import { useNavigate } from "react-router-dom";
+import logo from '../../assets/favicon.png'
+import { ThemeContext } from "../../context/ThemeContext";
 import {
   FaSearch,
   FaBell,
   FaUserCircle,
+  FaMoon,
+  FaSun,
 } from "react-icons/fa";
 
 import "./Navbar.css";
 
 const Navbar = () => {
 
-  const { search, setSearch } = useContext(MusicContext);
+  const { 
+    search, 
+    setSearch,
+    submittedSearch,
+    setSubmittedSearch,
+   } = useContext(MusicContext);
+
+   const { theme, toggleTheme } = useContext(ThemeContext);
+
+   const navigate = useNavigate();
+
+
+   const handleSearch = () => {
+      setSubmittedSearch(search.trim());
+    };
 
   return (
     <header className="navbar">
@@ -21,7 +39,8 @@ const Navbar = () => {
 
       <div className="logo">
         <div className="logo-icon">
-          <IoMusicalNotes />
+          {/* <IoMusicalNotes /> */}
+          <img src={logo} alt="logo" />
         </div>
 
         <h2>404Music</h2>
@@ -30,15 +49,19 @@ const Navbar = () => {
       {/* Search */}
 
       <div className="search-box">
-
-        <FaSearch className="search-icon"/>
-
         <input
           type="text"
           placeholder="Search songs, artists..."
           value={search}
           onChange={(e)=>setSearch(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearch();
+            }
+          }}
         />
+
+        <FaSearch className="search-icon" onClick={handleSearch} />
 
       </div>
 
@@ -46,16 +69,26 @@ const Navbar = () => {
 
       <div className="nav-actions">
 
+        {/* <button
+            className="glass-btn"
+            onClick={toggleTheme}
+        >
+            {theme === "dark"
+                ? <FaSun/>
+                : <FaMoon/>
+            }
+        </button> */}
+
         <button className="glass-btn">
           <FaBell/>
         </button>
 
-        <div className="profile">
-
-          <FaUserCircle/>
-
-          <span>Profile</span>
-
+        <div
+            className="profile"
+            onClick={() => navigate("/profile")}
+        >
+            <FaUserCircle />
+            <span>Profile</span>
         </div>
 
       </div>
