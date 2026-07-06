@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 import "./SongCard.css";
 
-const SongCard = ({ song, index, playlist  }) => {
+const SongCard = ({ song, index, playlist, onPlay }) => {
   const {
     currentSong,
     setCurrentSong,
@@ -30,6 +30,8 @@ const SongCard = ({ song, index, playlist  }) => {
     addSongToPlaylist,
 
     setPlaylist,
+
+    setQueue,
   } = useContext(MusicContext);
 
   const isActive = currentSong?.id === song.id;
@@ -45,6 +47,9 @@ const SongCard = ({ song, index, playlist  }) => {
       return;
     }
 
+    // Allow caller (e.g. PlaylistPage) to override queue first
+    if (onPlay) onPlay();
+
     // Save current playlist index
     setCurrentIndex(index);
 
@@ -58,7 +63,10 @@ const SongCard = ({ song, index, playlist  }) => {
     // Set current song
     setCurrentSong(song);
 
-    setPlaylist(playlist);
+    if (playlist) {
+        setPlaylist(playlist);
+        setQueue(playlist);
+    }
   
     const updatedRecent = [
         song,
@@ -71,9 +79,6 @@ const SongCard = ({ song, index, playlist  }) => {
     setIsPlaying(true);
 
     toast.success(`🎵 Now Playing: ${song.title}`);
-
-    console.log("Selected Index:", index);
-    console.log("Selected Song:", song.title);
   };
 
   // Favorites
@@ -120,9 +125,6 @@ const handleAddToPlaylist = (e) => {
   // alert(`Added to "${playlists[index].name}"`);
 
   addSongToPlaylist(playlists[index].id, song);
-
-console.log("Selected Playlist:", playlists[index]);
-console.log("Song:", song);
 };
 
 

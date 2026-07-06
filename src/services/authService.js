@@ -1,7 +1,7 @@
 import {
   auth,
   googleProvider,
-} from "../firebase/firebase";
+} from "../Firebase/firebase";
 
 import {
   signInWithPopup,

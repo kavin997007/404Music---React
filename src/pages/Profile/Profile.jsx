@@ -5,7 +5,7 @@ import {
     signOut,
 } from "firebase/auth";
 
-import { auth } from "../../firebase/firebase";
+import { auth } from "../../Firebase/firebase";
 import { useAuth } from "../../context/AuthContext";
 import { MusicContext } from "../../context/MusicContext";
 
@@ -16,9 +16,6 @@ import {
     FaHistory,
     FaMusic,
     FaSignOutAlt,
-    FaUserEdit,
-    FaCamera,
-    FaMoon,
 } from "react-icons/fa";
 
 import "./Profile.css";

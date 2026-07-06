@@ -49,7 +49,7 @@ export const searchMusic = async (query) => {
 // More Songs
 
 export const fetchMoreSongs = async (source) => {
-  let query = "";
+  let query;
 
   switch (source.type) {
     case "search":

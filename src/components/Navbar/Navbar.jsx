@@ -1,12 +1,10 @@
 import { useContext } from "react";
 import { MusicContext } from "../../context/MusicContext";
-import { IoMusicalNotes } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import logo from '../../assets/favicon.png'
 import { ThemeContext } from "../../context/ThemeContext";
 import {
   FaSearch,
-  FaBell,
   FaUserCircle,
   FaMoon,
   FaSun,
@@ -19,7 +17,6 @@ const Navbar = () => {
   const { 
     search, 
     setSearch,
-    submittedSearch,
     setSubmittedSearch,
    } = useContext(MusicContext);
 
@@ -72,6 +69,7 @@ const Navbar = () => {
         {/* <button
             className="glass-btn"
             onClick={toggleTheme}
+            aria-label="Toggle Theme"
         >
             {theme === "dark"
                 ? <FaSun/>
@@ -79,9 +77,9 @@ const Navbar = () => {
             }
         </button> */}
 
-        <button className="glass-btn">
+        {/* <button className="glass-btn">
           <FaBell/>
-        </button>
+        </button> */}
 
         <div
             className="profile"

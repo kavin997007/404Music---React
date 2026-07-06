@@ -39,7 +39,7 @@ const useKeyboardShortcuts = () => {
           setIsPlaying((prev) => !prev);
           break;
 
-        case "ArrowRight":
+        case "ArrowRight": {
           if (!playlist.length) return;
 
           let next =
@@ -55,8 +55,9 @@ const useKeyboardShortcuts = () => {
           setCurrentSong(playlist[next]);
           setIsPlaying(true);
           break;
+        }
 
-        case "ArrowLeft":
+        case "ArrowLeft": {
           if (!playlist.length) return;
 
           let prev =
@@ -73,6 +74,7 @@ const useKeyboardShortcuts = () => {
           setCurrentSong(playlist[prev]);
           setIsPlaying(true);
           break;
+        }
 
         case "ArrowUp":
           e.preventDefault();

@@ -10,6 +10,7 @@ import {
 
 import MainLayout from "../../layouts/MainLayout/MainLayout";
 import SongCard from "../../components/SongCard/SongCard";
+import SongSkeleton from "../../components/Skeleton/SongSkeleton";
 
 import {
     MusicContext,
@@ -32,11 +33,16 @@ const Category = () => {
 
     const {
         favorites,
+        setPlaylist,
+        setQueue,
+        setCurrentSource,
     } = useContext(MusicContext);
 
     const [songs, setSongs] = useState([]);
 
     const [loading, setLoading] = useState(true);
+
+    const displaySongs = name === "liked" ? favorites : songs;
 
     useEffect(() => {
 
@@ -48,7 +54,9 @@ const Category = () => {
 
                 if (name === "liked") {
 
-                    setSongs(favorites);
+                    setPlaylist(favorites);
+                    setQueue(favorites);
+                    setCurrentSource({ type: "liked", query: "" });
 
                     return;
 
@@ -75,25 +83,28 @@ const Category = () => {
 
                 }
 
+                let normalized = [];
+
                 if (name === "trending") {
 
                     const data =
                         await getTrendingMusic();
 
-                    setSongs(
-                        data.map(normalizeSong)
-                    );
+                    normalized = data.map(normalizeSong);
 
                 } else {
 
                     const data =
                         await searchMusic(query);
 
-                    setSongs(
-                        data.map(normalizeSong)
-                    );
+                    normalized = data.map(normalizeSong);
 
                 }
+
+                setSongs(normalized);
+                setPlaylist(normalized);
+                setQueue(normalized);
+                setCurrentSource({ type: "category", query: name });
 
             }
 
@@ -107,7 +118,7 @@ const Category = () => {
 
         loadSongs();
 
-    }, [name, favorites]);
+    }, [name]);
 
     return (
 
@@ -120,24 +131,33 @@ const Category = () => {
                 </h1>
 
                 <p>
-                    {songs.length} Songs
+                    {displaySongs.length} Songs
                 </p>
 
-                <div className="songs-grid">
+                {loading ? (
+                    <div className="songs-grid">
+                        {Array.from({ length: 8 }).map((_, index) => (
+                            <SongSkeleton key={index} />
+                        ))}
+                    </div>
+                ) : (
+                    <div className="songs-grid">
 
-                    {
-                        songs.map((song, index) => (
+                        {
+                            displaySongs.map((song, index) => (
 
-                            <SongCard
-                                key={song.id}
-                                song={song}
-                                index={index}
-                            />
+                                <SongCard
+                                    key={song.id}
+                                    song={song}
+                                    index={index}
+                                    playlist={displaySongs}
+                                />
 
-                        ))
-                    }
+                            ))
+                        }
 
-                </div>
+                    </div>
+                )}
 
             </div>
 

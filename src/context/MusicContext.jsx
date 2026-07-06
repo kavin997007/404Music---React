@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 export const MusicContext = createContext();
@@ -66,24 +67,7 @@ const [isPreloading, setIsPreloading] =
   // Submit
   const [submittedSearch, setSubmittedSearch] = useState("");
 
-  // Theme
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("theme") !== "light";
-});
 
-useEffect(() => {
-
-    if (darkMode) {
-        document.body.classList.add("dark");
-        document.body.classList.remove("light");
-        localStorage.setItem("theme", "dark");
-    } else {
-        document.body.classList.add("light");
-        document.body.classList.remove("dark");
-        localStorage.setItem("theme", "light");
-    }
-
-}, [darkMode]);
 
   useEffect(() => {
   localStorage.setItem(
@@ -130,7 +114,7 @@ const addSongToPlaylist = (playlistId, song) => {
       };
     })
   );
-};;
+};
 
 const removeSongFromPlaylist = (playlistId, songId) => {
   setPlaylists((prev) =>
@@ -259,8 +243,6 @@ const removeFromQueue = (songId) => {
         submittedSearch,
         setSubmittedSearch,
 
-        darkMode,
-        setDarkMode,
       }}
     >
       {children}

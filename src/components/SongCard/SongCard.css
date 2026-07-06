@@ -87,10 +87,10 @@ IMAGE
     transform:scale(1.08);
 }
 
-.album.playing{
+/* .album.playing{
 
     animation:albumRotate 14s linear infinite;
-}
+} */
 
 /* ==========================================
 OVERLAY

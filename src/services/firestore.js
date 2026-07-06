@@ -4,7 +4,7 @@ import {
     getDoc,
 } from "firebase/firestore";
 
-import { db } from "../firebase/firebase";
+import { db } from "../Firebase/firebase";
 
 export const saveUserData = async (
     uid,

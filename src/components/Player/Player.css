@@ -173,7 +173,7 @@
     transform:scale(1.06);
 }
 
-.player-album.playing{
+/* .player-album.playing{
 
     animation:albumRotate 18s linear infinite;
 }
@@ -188,7 +188,7 @@
         transform:rotate(360deg);
     }
 
-}
+} */
 
 /* ==========================================
    SONG INFO
@@ -260,7 +260,7 @@
 
     align-items:center;
 
-    gap:18px;
+    gap:10px;
 }
 
 .control-btn{
@@ -698,7 +698,7 @@
 
 .player::after{
 
-    animation:glassMove 10s linear infinite;
+    /* animation:glassMove 10s linear infinite; */
 }
 
 @keyframes glassMove{

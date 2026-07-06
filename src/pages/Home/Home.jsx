@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getTrendingMusic, searchMusic } from "../../services/youtube";
 import { MusicContext } from "../../context/MusicContext";
@@ -9,10 +9,18 @@ import SongCard from "../../components/SongCard/SongCard";
 
 import "./Home.css";
 
+// Map of tab key → { title, searchQuery }
+// trending uses getTrendingMusic(); others use searchMusic(query)
+const CATEGORIES = {
+  trending: { title: "🔥 Trending Music",  query: null },
+  chill:    { title: "🎧 Chill Mix",        query: "Chill Mix" },
+  new:      { title: "🚀 New Releases",     query: "New Songs 2026" },
+  liked:    { title: "❤️ Liked Songs",     query: null },
+};
+
 const Home = () => {
 
   const {
-    search,
     submittedSearch,
     searchResults,
     setSearchResults,
@@ -21,41 +29,48 @@ const Home = () => {
     recentSongs,
     favorites,
     setCurrentSource,
-    playlist,
   } = useContext(MusicContext);
 
-  // const [songs, setSongs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading]               = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("trending");
-  const [sectionTitle, setSectionTitle] = useState("🔥 Trending Music");
-  const [searchCache, setSearchCache] = useState({});
+  const [sectionTitle, setSectionTitle]     = useState("🔥 Trending Music");
+
+  // Use a ref for the search cache so updating it never triggers a re-render loop
+  const searchCacheRef = useRef({});
+
+  const [categorySongs, setCategorySongs] = useState({
+    trending: [],
+    chill:    [],
+    new:      [],
+  });
 
   const navigate = useNavigate();
 
   /* ===========================
-      Trending Songs
+      Load Trending on mount
   =========================== */
 
   useEffect(() => {
 
-    const fetchSongs = async () => {
+    const fetchTrending = async () => {
 
       try {
 
         setLoading(true);
 
-        const data = await getTrendingMusic();
-
+        const data       = await getTrendingMusic();
         const normalized = data.map(normalizeSong);
 
-        // setSongs(normalized);
+        setCategorySongs((prev) => ({ ...prev, trending: normalized }));
 
+        // Set initial global queue to trending
         setPlaylist(normalized);
-setQueue(normalized);
+        setQueue(normalized);
+        setCurrentSource({ type: "trending", query: "" });
 
       } catch (err) {
 
-        console.log(err);
+        console.error(err);
 
       } finally {
 
@@ -65,8 +80,9 @@ setQueue(normalized);
 
     };
 
-    fetchSongs();
+    fetchTrending();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /* ===========================
@@ -75,141 +91,119 @@ setQueue(normalized);
 
   useEffect(() => {
 
-  const fetchSearch = async () => {
+    const fetchSearch = async () => {
 
-    if (!submittedSearch.trim()) {
-
-      setSearchResults([]);
-      setLoading(false);
-
-      return;
-
-    }
-    const key = submittedSearch.toLowerCase();
-
-      if (searchCache[key]) {
-          console.log("Loaded from cache");
-
-          setSearchResults(searchCache[key]);
-
-          setLoading(false);
-
-          return;
+      if (!submittedSearch.trim()) {
+        setSearchResults([]);
+        return;
       }
 
-    try {
+      const key = submittedSearch.toLowerCase();
 
-      setLoading(true);
+      // Check ref cache first — no re-render triggered
+      if (searchCacheRef.current[key]) {
+        setSearchResults(searchCacheRef.current[key]);
+        setPlaylist(searchCacheRef.current[key]);
+        setQueue(searchCacheRef.current[key]);
+        setCurrentSource({ type: "search", query: submittedSearch });
+        return;
+      }
 
-      const data = await searchMusic(submittedSearch);
+      try {
 
-      const normalized = data.map(normalizeSong);
+        setLoading(true);
 
-      setSearchResults(normalized);
+        const data       = await searchMusic(submittedSearch);
+        const normalized = data.map(normalizeSong);
 
-      setSearchCache((prev) => ({
-          ...prev,
-          [key]: normalized,
-      }));
+        // Store in ref (no re-render)
+        searchCacheRef.current[key] = normalized;
 
-    } catch (err) {
+        setSearchResults(normalized);
+        setPlaylist(normalized);
+        setQueue(normalized);
+        setCurrentSource({ type: "search", query: submittedSearch });
 
-      console.log(err);
+      } catch (err) {
 
-    } finally {
+        console.error(err);
 
-      setLoading(false);
+      } finally {
 
-    }
+        setLoading(false);
 
-  };
+      }
 
-  fetchSearch();
+    };
 
-}, [submittedSearch, searchCache]);
+    fetchSearch();
+
+  // searchCacheRef is a ref, intentionally excluded from deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [submittedSearch]);
+
   /* ===========================
       Display Songs
   =========================== */
 
   const displaySongs = submittedSearch.trim()
-  ? searchResults
-  : selectedCategory === "liked"
-  ? favorites
-  : playlist;
+    ? searchResults
+    : selectedCategory === "liked"
+    ? favorites
+    : categorySongs[selectedCategory] || [];
+
+  const isSearching = submittedSearch.trim() !== "";
 
   /* ===========================
-      Search Drim Songs
-  =========================== */
-      const isSearching = submittedSearch.trim() !== "";
-
-      
-  /* ===========================
-      Playlist + Queue
-  =========================== */
-
-  useEffect(() => {
-
-  setPlaylist(displaySongs);
-
-  setQueue(displaySongs);
-
-  if (submittedSearch.trim()) {
-    setCurrentSource({
-      type: "search",
-      query: submittedSearch,
-    });
-  } else {
-    setCurrentSource({
-      type: "trending",
-      query: selectedCategory,
-    });
-  }
-
-}, [
-  displaySongs,
-  submittedSearch,
-  selectedCategory,
-]);
-
-/* ===========================
       Load Category
   =========================== */
 
   const loadCategory = async (category) => {
-    try {
-      setLoading(true);
 
+    try {
+
+      setLoading(true);
       setSelectedCategory(category);
+      setSectionTitle(CATEGORIES[category]?.title || category);
 
       if (category === "liked") {
-        setSectionTitle("❤️ Liked Songs");
+        setPlaylist(favorites);
+        setQueue(favorites);
+        setCurrentSource({ type: "liked", query: "" });
         return;
       }
 
       if (category === "trending") {
-        setSectionTitle("🔥 Trending Music");
+        const data       = await getTrendingMusic();
+        const normalized = data.map(normalizeSong);
 
-        const data = await getTrendingMusic();
-        setSongs(data.map(normalizeSong));
+        setCategorySongs((prev) => ({ ...prev, trending: normalized }));
+        setPlaylist(normalized);
+        setQueue(normalized);
+        setCurrentSource({ type: "trending", query: "" });
         return;
       }
 
-      if (category === "Chill Mix") {
-        setSectionTitle("🎧 Chill Mix");
-      }
+      // chill / new — use their mapped search query
+      const searchQuery = CATEGORIES[category]?.query || category;
+      const data        = await searchMusic(searchQuery);
+      const normalized  = data.map(normalizeSong);
 
-      if (category === "New Songs 2026") {
-        setSectionTitle("🚀 New Releases");
-      }
-
-      const data = await searchMusic(category);
-      setSongs(data.map(normalizeSong));
+      setCategorySongs((prev) => ({ ...prev, [category]: normalized }));
+      setPlaylist(normalized);
+      setQueue(normalized);
+      setCurrentSource({ type: "category", query: searchQuery });
 
     } catch (err) {
-      console.log(err);
+
+      console.error(err);
+
     } finally {
+
       setLoading(false);
+
     }
+
   };
 
   return (
@@ -238,7 +232,10 @@ setQueue(normalized);
                   Discover trending music and enjoy your favorite songs anytime.
                 </p>
 
-                <button className="hero-btn">
+                <button
+                  className="hero-btn"
+                  onClick={() => loadCategory("trending")}
+                >
                   ▶ Play Trending
                 </button>
 
@@ -248,9 +245,7 @@ setQueue(normalized);
             <section className="quick-grid">
 
               <div
-                className={`quick-card ${
-                  selectedCategory === "liked" ? "active" : ""
-                }`}
+                className={`quick-card ${selectedCategory === "liked" ? "active" : ""}`}
                 onClick={() => loadCategory("liked")}
               >
                 <div className="emoji">❤️</div>
@@ -259,9 +254,7 @@ setQueue(normalized);
               </div>
 
               <div
-                className={`quick-card ${
-                  selectedCategory === "trending" ? "active" : ""
-                }`}
+                className={`quick-card ${selectedCategory === "trending" ? "active" : ""}`}
                 onClick={() => loadCategory("trending")}
               >
                 <div className="emoji">🔥</div>
@@ -270,21 +263,17 @@ setQueue(normalized);
               </div>
 
               <div
-                className={`quick-card ${
-                  selectedCategory === "chill" ? "active" : ""
-                }`}
-                onClick={() => loadCategory("Chill Mix")}
+                className={`quick-card ${selectedCategory === "chill" ? "active" : ""}`}
+                onClick={() => loadCategory("chill")}
               >
                 <div className="emoji">🎧</div>
                 <h3>Chill Mix</h3>
-                <p>Relax & Enjoy</p>
+                <p>Relax &amp; Enjoy</p>
               </div>
 
               <div
-                className={`quick-card ${
-                  selectedCategory === "new" ? "active" : ""
-                }`}
-                onClick={() => loadCategory("New Songs 2026")}
+                className={`quick-card ${selectedCategory === "new" ? "active" : ""}`}
+                onClick={() => loadCategory("new")}
               >
                 <div className="emoji">🚀</div>
                 <h3>New Releases</h3>
@@ -297,21 +286,19 @@ setQueue(normalized);
 
         {/* No Results */}
 
-        {!loading &&
-          isSearching &&
-          displaySongs.length === 0 && (
-            <div className="no-results">
-              <h2>No Songs Found 😔</h2>
-              <p>Try another search.</p>
-            </div>
+        {!loading && isSearching && displaySongs.length === 0 && (
+          <div className="no-results">
+            <h2>No Songs Found 😔</h2>
+            <p>Try another search.</p>
+          </div>
         )}
 
         {/* Songs */}
 
         {loading ? (
           <div className="songs-grid">
-            {Array.from({ length: 12 }).map((_, index) => (
-              <SongSkeleton key={index} />
+            {Array.from({ length: 12 }).map((_, i) => (
+              <SongSkeleton key={i} />
             ))}
           </div>
         ) : (
@@ -325,12 +312,13 @@ setQueue(normalized);
               </h2>
 
               {!isSearching && (
-                <button className="see-all"
-                    onClick={() =>
-                        navigate(`/category/${selectedCategory}`)
-                    }
+                <button
+                  className="see-all"
+                  onClick={() =>
+                    navigate(`/category/${encodeURIComponent(selectedCategory)}`)
+                  }
                 >
-                    See All
+                  See All
                 </button>
               )}
             </div>
@@ -357,15 +345,10 @@ setQueue(normalized);
           <section className="music-section">
 
             <div className="section-title">
-
               <div>
-                <span className="section-tag">
-                  History
-                </span>
-
+                <span className="section-tag">History</span>
                 <h2>🕒 Recently Played</h2>
               </div>
-
             </div>
 
             <div className="songs-grid">
@@ -375,7 +358,7 @@ setQueue(normalized);
                   key={song.id}
                   song={song}
                   index={index}
-                  // playlist={recentSongs}
+                  playlist={recentSongs}
                 />
               ))}
 

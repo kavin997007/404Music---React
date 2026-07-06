@@ -20,6 +20,9 @@ const PlaylistPage = () => {
     removeSongFromPlaylist,
     renamePlaylist,
     deletePlaylist,
+    setPlaylist,
+    setQueue,
+    setCurrentSource,
     } = useContext(MusicContext);
 
   const playlist = playlists.find(
@@ -161,6 +164,12 @@ const PlaylistPage = () => {
                 <SongCard
                     song={song}
                     index={index}
+                    playlist={playlist.songs}
+                    onPlay={() => {
+                      setPlaylist(playlist.songs);
+                      setQueue(playlist.songs);
+                      setCurrentSource({ type: "playlist", query: playlist.name });
+                    }}
                 />
 
                 <button

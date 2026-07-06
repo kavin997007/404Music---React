@@ -4,14 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
   updateProfile,
-  GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
 
 import {
   auth,
   googleProvider,
-} from "../../firebase/firebase";
+} from "../../Firebase/firebase";
 
 import "./Signup.css";
 

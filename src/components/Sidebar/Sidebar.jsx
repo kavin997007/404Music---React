@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { MusicContext } from "../../context/MusicContext";
 import logo from '../../assets/favicon.png'
@@ -8,7 +8,6 @@ import {
   FaHeart,
   FaHistory,
   FaPlus,
-  FaMusic,
 } from "react-icons/fa";
 
 import "./Sidebar.css";

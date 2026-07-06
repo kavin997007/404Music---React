@@ -45,7 +45,6 @@ const Player = () => {
     repeatMode,
     setRepeatMode,
 
-    showFullPlayer,
     setShowFullPlayer,
   } = useContext(MusicContext);
 
@@ -153,8 +152,6 @@ const Player = () => {
   return <FaVolumeUp />;
 };
 
-  console.log("Playlist:", playlist.length);
-  console.log("Current Index:", currentIndex);
 
   return (
   <>

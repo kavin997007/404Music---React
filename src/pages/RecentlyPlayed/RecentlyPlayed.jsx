@@ -7,7 +7,7 @@ import SongCard from "../../components/SongCard/SongCard";
 import "./RecentlyPlayed.css";
 
 const RecentlyPlayed = () => {
-  const { recentSongs,favorites } = useContext(MusicContext);
+  const { recentSongs } = useContext(MusicContext);
 
   return (
     <MainLayout>
@@ -22,10 +22,11 @@ const RecentlyPlayed = () => {
           </div>
         ) : (
           <div className="songs-grid">
-            {recentSongs.map((song) => (
+            {recentSongs.map((song, index) => (
               <SongCard
                 key={song.id}
                 song={song}
+                index={index}
                 playlist={recentSongs}
               />
             ))}

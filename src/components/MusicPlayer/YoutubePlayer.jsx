@@ -236,7 +236,7 @@ const YoutubePlayer = () => {
 
     }
 
-    let nextIndex = currentIndex;
+    let nextIndex;
 
     /* Repeat One */
 
@@ -284,32 +284,11 @@ const YoutubePlayer = () => {
 
       }
 
-      /* End of Playlist */
+      /* End of Playlist – stop playback */
 
       else if (nextIndex >= playlist.length) {
 
-        console.log(
-          "Waiting for preloaded songs..."
-        );
-
-        /*
-            If preload hasn't completed yet,
-            try fetching immediately.
-        */
-
         await preloadMoreSongs();
-
-// Wait briefly for React to update state
-
-
-setIsPlaying(false);
-
-return;
-
-return;
-        /*
-            Still nothing
-        */
 
         setIsPlaying(false);
 

@@ -8,6 +8,7 @@ const Queue = () => {
   const {
     queue,
     currentSong,
+    playlist,
 
     setCurrentSong,
     setCurrentIndex,
@@ -23,13 +24,16 @@ const Queue = () => {
 
   if (!queue.length) return null;
 
-  const playSong = (song, index) => {
+  const playSong = (song) => {
+    // Find the song's real index in the global playlist
+    const realIndex = playlist.findIndex((s) => s.id === song.id);
+
     setPlayer(null);
     setPlayed(0);
     setDuration(0);
 
     setCurrentSong(song);
-    setCurrentIndex(index);
+    setCurrentIndex(realIndex !== -1 ? realIndex : 0);
     setIsPlaying(true);
   };
 
@@ -46,7 +50,7 @@ const Queue = () => {
         </div>
 
       <div className="queue-list">
-        {queue.map((song, index) => (
+        {queue.map((song) => (
           <div
             key={song.id}
             className={`queue-item ${
@@ -56,12 +60,12 @@ const Queue = () => {
             <img
               src={song.thumbnail}
               alt={song.title}
-              onClick={() => playSong(song, index)}
+              onClick={() => playSong(song)}
             />
 
             <div
               className="queue-info"
-              onClick={() => playSong(song, index)}
+              onClick={() => playSong(song)}
             >
               <h4>{song.title}</h4>
               <p>{song.artist}</p>
