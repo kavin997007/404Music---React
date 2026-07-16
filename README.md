@@ -4,6 +4,9 @@ A full-featured, YouTube-powered music streaming web app built with **React + Vi
 
 ---
 
+## Live Demo
+https://404music.netlify.app
+
 ## ✨ Features
 
 | Feature | Description |
